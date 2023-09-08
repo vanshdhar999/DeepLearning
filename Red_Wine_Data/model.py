@@ -9,6 +9,9 @@ import pandas as pd
 from IPython.display import display 
 from tensorflow import keras
 from tensorflow.keras import layers
+import matplotlib
+import matplotlib.pyplot as plt
+
 
 # read the data from the csv file and store it in red_wine
 red_wine = pd.read_csv('./red-wine.csv')
@@ -17,7 +20,7 @@ red_wine = pd.read_csv('./red-wine.csv')
 
 df_train = red_wine.sample(frac=0.7, random_state=0)
 df_valid = red_wine.drop(df_train.index)
-display(df_train.head(4))
+#display(df_train.head(4))
 
 # Scale to [0, 1], works much better for some reason we will learn about. 
 
@@ -33,7 +36,7 @@ y_train = df_train['quality']
 y_valid = df_valid['quality']
 
 # Determine how many inputs should we have for our model. excluding the target. 
-print(X_train.shape)
+#print(X_train.shape)
 
 #We will define our model with 3 hidden layers and over 1500 neurons. This should be sufficient for our purpose.
 
@@ -47,7 +50,32 @@ model = keras.Sequential([
 
 # define the loss function and optimizer 
 
-model.compile(loss="mae", optimizer="adam")
+model.compile(loss="mse", optimizer="adam")
+
+# Let's train our data now. We will define our batch size to be 256, and epochs to be 10. 
+# That is the model will run through the data set ten times. 
+
+history = model.fit(X_train, y_train, validation_data=(X_valid, y_valid), batch_size=256, epochs=10)
+
+# the keras api keeps us updated with the loss in each iteration.
+
+#it is better to store the loss values in a pandas dataframe. and plot it to visualize the loss function over each run
+
+# convert the training history to pandas dataframe
+
+history_df = pd.DataFrame(history.history)
+
+# Use pandas native  method to plot the loss
+
+history_df['loss'].plot();
+
+# Hurray ! You just trained your first deep neural network.
+
+
+
+
+
+
 
 
 
