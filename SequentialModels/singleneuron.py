@@ -12,11 +12,6 @@ plt.style.use('seaborn-whitegrid')
 plt.rc('figure', autolayout=True)
 plt.rc('axes', labelweight='bold', labelsize='large',titleweight='bold', titlesize=18, titlepad=10)
 
-from learntools.core import binder
-binder.bind(globals())
-
-from learntools.deep_learning_intro.ex1 import *
-
 import pandas as pd
 
 red_wine = pd.read_csv('../input/dl-course-data/red-wine.csv')
@@ -37,9 +32,9 @@ input_shape = [11]
 
 model = keras.Sequential([layers.Dense(units=1, input_shape=input_shape)])
 
-#Now we define the weights for the neuwon
+#Now we define the weights for the neuron
 
-#By default keras stores the weights in for of tensors. 
+#By default keras stores the weights in the form of tensors. 
 
 # We can get the weights by printing the weights
 
