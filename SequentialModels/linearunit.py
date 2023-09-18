@@ -1,4 +1,5 @@
 from tensorflow import keras 
+import matplotlib.pyplot as plt
 #How to create a linear unit
 
 from tensorflow.keras.layers import Dense

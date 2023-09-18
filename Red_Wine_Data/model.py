@@ -4,14 +4,12 @@
 #This dataset consists of physiochemical measurements from about 1600 Portuguese red wines.
 
 #Also included is a quality rating for each wine from blind taste-tests.
-
+import matplotlib
 import pandas as pd
 from IPython.display import display 
 from tensorflow import keras
 from tensorflow.keras import layers
-import matplotlib
-import matplotlib.pyplot as plt
-
+import numpy as np
 
 # read the data from the csv file and store it in red_wine
 red_wine = pd.read_csv('./red-wine.csv')
@@ -41,16 +39,24 @@ y_valid = df_valid['quality']
 #We will define our model with 3 hidden layers and over 1500 neurons. This should be sufficient for our purpose.
 
 model = keras.Sequential([
-    layers.Dense(units = 512, activation ='relu', input_shape= [11]),
-    layers.Dense(units = 512, activation='relu'),
-    layers.Dense(units = 512, activation='relu'),
-
+    layers.Dense(units = 1024, activation ='relu', input_shape= [11]),
+    layers.Dropout(0.3),
+    layers.BatchNormalization(),
+    layers.Dense(units = 1024, activation ='relu'),
+    layers.Dropout(0.3),
+    layers.BatchNormalization(),
+    layers.Dense(units = 1024, activation ='relu'),
+    layers.Dropout(0.3),
+    layers.BatchNormalization(),
+    
     layers.Dense(units = 1)
 ])
 
 # define the loss function and optimizer 
 
-model.compile(loss="mse", optimizer="adam")
+model.compile(
+    loss="mse", 
+    optimizer="adam")
 
 # Let's train our data now. We will define our batch size to be 256, and epochs to be 10. 
 # That is the model will run through the data set ten times. 
@@ -64,10 +70,11 @@ history = model.fit(X_train, y_train, validation_data=(X_valid, y_valid), batch_
 # convert the training history to pandas dataframe
 
 history_df = pd.DataFrame(history.history)
+history_df.loc[:, ['loss', 'val_loss']].plot()
 
 # Use pandas native  method to plot the loss
 
-history_df['loss'].plot();
+
 
 # Hurray ! You just trained your first deep neural network.
 
