@@ -11,8 +11,14 @@ from tensorflow import keras
 from tensorflow.keras import layers
 import numpy as np
 
+
+
 # read the data from the csv file and store it in red_wine
 red_wine = pd.read_csv('./red-wine.csv')
+
+# This data set does not have missing values
+
+
 
 #Creating training and validation splits 
 
@@ -60,8 +66,9 @@ model.compile(
 
 # Let's train our data now. We will define our batch size to be 256, and epochs to be 10. 
 # That is the model will run through the data set ten times. 
-
-history = model.fit(X_train, y_train, validation_data=(X_valid, y_valid), batch_size=256, epochs=10)
+print(y_train, y_valid)
+print(X_train.shape, X_valid.shape)
+history = model.fit(X_train, y_train, validation_data=(X_valid, y_valid), batch_size=256, epochs=10, verbose=0)
 
 # the keras api keeps us updated with the loss in each iteration.
 
